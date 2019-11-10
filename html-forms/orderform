@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Ubermelon Order Form</title>
+    </head>
+    <body>
+        <h1>Order!</h1>
+        <br>
+        <h3>Prices</h3>
+        <br>
+        <table id="melon-price-table">
+            <tr>
+                <th>Melon Name</th>
+                <th>Price per lb</th>
+            </tr>
+            <tr>
+                <td>Watermelon</td>
+                <td>$1.59</td>
+            </tr>
+                <td>Honeydew</td>
+                <td>$0.99</td>
+            <tr>
+                <td>Cantelope</td>
+                <td>$1.29</td>
+            </tr>
+            <tr>
+                <td>Crenshaw</td>
+                <td>$2.19</td>
+            </tr>
+            <tr>
+                <td>Canary</td>
+                <td>$11.99</td>
+            </tr>
+        </table>
+        <br>
+        <p>Place your orders here! You know you want to.</p>
+        <br>
+        <form action="https://ubermelon-order-form.herokuapp.com/process" method="GET">
+            First Name: <input type="text" name="firstname">
+            <br>
+            Last Name: <input type="text" name ="lastname">
+            <br>
+            Melon Type: 
+                <select name="melontype">
+                    <option value="watermelon">Watermelon</option>
+                    <option value="honeydew">Honeydew</option>
+                    <option value="cantelope">Cantelope</option>
+                    <option value="crenshaw">Crenshaw</option>
+                    <option value="canary">Canary</option>
+            <br>
+            Quantity*: <input type="number" name="quantity">
+            <br>
+            Delivery Time:
+                <input type="radio" name="time" value="am">12:00AM-12:00PM
+                <input type="radio" name="time" value="pm">12:00PM-12:00AM
+                <input type="radio" name="time" value="wat">Time is an illusion
+            <br>
+            Returning Customer: 
+                <input type="radio" name="returning" value="yes">Yes
+                <input type="radio" name="returning" value="no">No
+            <br>
+            Statistics:
+                <input type="checkbox" name="stats" value="Dog">Dog
+                <input type="checkbox" name="stats" value="Cat">Cat
+                <input type="checkbox" name="stats" value="Hedgehog">Hedgehog
+                <input type="checkbox" name="stats" value="Balloonicorn">Balloonicorn
+                <input type="checkbox" name="stats" value="Yak">Yak
+            <br>
+            <input type="submit">
+        </form>
+    </body>
+    <foot>
+        <p>*Quatities are given by the flat.</p>
+    </foot>
+</html>
