@@ -56,17 +56,24 @@ def show_madlib_form():
 @app.route('/madlib')
 def show_madlib():
     """Create a madlib based on user input from game."""
+    madlib_temp_list = ["madlib.html", "madlib2.html", "madlib3.html"]
     person = request.args.get("person")
     color = request.args.get("color")
-    noun = request.args.get("noun")
+    noun = request.args.get("noun")   
     adjective = request.args.get("adjective")
+    adjective2 = request.args.get("adjective2", '')
+    adjective3 = request.args.get("adjective3", '')
+    adjective4 = request.args.get("adjective4", '')
 
-    return render_template("madlib.html",
+    return render_template(choice(madlib_temp_list),
                            person=person,
                            color=color,
                            noun=noun,
-                           adjective=adjective)
-
+                           adjective=adjective,
+                           adjective2=adjective2,
+                           adjective3=adjective3,
+                           adjective4=adjective4)
+                          
 
 if __name__ == '__main__':
     # Setting debug=True gives us error messages in the browser and also
