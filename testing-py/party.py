@@ -44,7 +44,6 @@ def most_and_least_common_type(treats):
 
         >>> most_and_least_common_type(treats)
         (None, None)
-
     """
 
     types = {}
