@@ -32,8 +32,11 @@ def get_student_by_github(github):
     db_cursor = db.session.execute(QUERY, {'github': github})
 
     row = db_cursor.fetchone()
+    if row:
+        print("Student: {} {}\nGitHub account: {}".format(row[0], row[1], row[2]))
+    else:
+        print("Not a valid student")
 
-    print("Student: {} {}\nGitHub account: {}".format(row[0], row[1], row[2]))
 
 
 def make_new_student(first_name, last_name, github):
@@ -65,9 +68,10 @@ def get_project_by_title(title):
     db_cursor = db.session.execute(QUERY, {'project_title': title})
 
     row = db_cursor.fetchone()
-
-    print("{}: {}. Max Grade is {}".format(row[0], row[1], row[2]))
-
+    if row:
+        print("{}: {}. Max Grade is {}".format(row[0], row[1], row[2]))
+    else:
+        print("Project title does not exist")
 
 def get_grade_by_github_title(github, title):
     """Print grade student received for a project."""
@@ -99,6 +103,35 @@ def assign_grade(github, title, grade):
 
     print('For {} added a grade of {} for project {}.'.format(github, grade, title))
 
+def make_new_project(project_title, description, max_grade):
+    """Add a new project and print confirmation.
+
+    Given a project title, description, and max grade, add project to the
+    database and print a confirmation message.
+    """
+    QUERY = """
+        INSERT INTO projects (title, description, max_grade)
+            VALUES(:project_title, :description, :max_grade)
+    """
+    db.session.execute(QUERY, {'project_title':project_title, 'description':description, 'max_grade':max_grade})
+    db.session.commit()
+
+    print('{} was added to DB. Project description: {}. Max Grade: {}'.format(project_title, description, max_grade))
+
+def get_grades_by_student(github):
+    """ Get all grades for a student, given their github handle."""
+    QUERY = """
+        SELECT project_title, grade
+        FROM grades
+        WHERE student_github = :github
+        """
+    db_cursor = db.session.execute(QUERY, {'github':github})
+    rows = db_cursor.fetchall()
+
+    for row in rows:
+        print('Title: {} \n Grade: {}'.format(row[0], row[1]))
+
+
 def handle_input():
     """Main loop.
 
@@ -110,17 +143,65 @@ def handle_input():
 
     while command != "quit":
         input_string = input("HBA Database> ")
-        tokens = input_string.split()
-        command = tokens[0]
+        tokens = input_string.split('|')
+        command = tokens[0].lower()
         args = tokens[1:]
 
         if command == "student":
-            github = args[0]
-            get_student_by_github(github)
+            if len(args) != 1:
+                print('Invalid number of arguments. Expect 1')
+            else:
+                github = args[0]
+                get_student_by_github(github)
 
         elif command == "new_student":
-            first_name, last_name, github = args  # unpack!
-            make_new_student(first_name, last_name, github)
+            if len(args) != 3:
+                print("Invalid number of arguments. Expect 3")
+            else:
+                first_name, last_name, github = args  # unpack!
+                make_new_student(first_name, last_name, github)
+        
+        elif command == "assign_grade":
+            if len(args) != 3:
+                print("Invalid number of arguments. Expect 3.")
+            else:
+                github, title, grade = args
+                assign_grade(github, title, grade)
+       
+        elif command == "get_grade_by_title":
+            if len(args) != 2:
+                print("Invalid number of arguments. Expect 2")
+            else:
+                github, title = args
+                get_grade_by_github_title(github, title)
+
+        elif command == "get_project_by_title":
+            if len(args) != 1:
+                print("Invalid number of arguments. Expect 1.")
+            else:
+                title = args[0]
+                get_project_by_title(title)
+
+        elif command == "make_new_student":
+            if len(args) != 3:
+                print("Invalid number of arguments. Expect 3.")
+            else:
+                first_name, last_name, github = args
+                make_new_student(first_name, last_name, github)
+
+        elif command == "make_new_project":
+            if len(args) != 3:
+                print("Invalid number of arguments. Expect 3.")
+            else:
+                project_title, description, max_grade = args
+                make_new_project(project_title, description, max_grade)
+
+        elif command == "get_grades_by_student":
+            if len(args) != 1:
+                print("Invalid number of arguments. Expect 1.")
+            else:
+                github = args[0]
+                get_grades_by_student(github)
 
         else:
             if command != "quit":
@@ -129,8 +210,8 @@ def handle_input():
 
 if __name__ == "__main__":
     connect_to_db(app)
-
-    #handle_input()
+    print("Seperate arguments by '|'")
+    handle_input()
 
     # To be tidy, we close our database connection -- though,
     # since this is where our program ends, we'd quit anyway.
