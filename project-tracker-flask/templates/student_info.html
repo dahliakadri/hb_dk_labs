@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head>
+    <title>Student Info</title>
+</head>
+<body>
+  <h1>{{ first }} {{ last }}</h1>
+
+  <p>GitHub Account: {{ github }}</p>
+  <p> Project Grades</p>
+    <ul>
+  {% for project_grade in project_grade_tup %} 
+    <li><a href="http://127.0.0.1:5000/project?title={{ project_grade[0] }}">{{ project_grade[0] }}</a>: Grade {{ project_grade[1]}}</li>
+  {% endfor %}     
+    </ul>
+</body>
+</html>
