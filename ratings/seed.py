@@ -50,9 +50,9 @@ def load_movies():
         movie_id = items[0]
         title = items[1]
         released_at = items[2]
-        imdb_url = items[-1]
+        imdb_url = items[4]
         #remove year from title
-        title = title.split("(")
+        title = title.split(" (")
         title = title[0]
         #need to formate released at date
         date_format = "%d-%b-%Y"
@@ -62,6 +62,8 @@ def load_movies():
                         title=title,
                         released_at=released_at,
                         imdb_url=imdb_url)
+        db.session.add(movie)
+    db.session.commit()
         
 def load_ratings():
     """Load ratings from u.data into database."""
@@ -74,12 +76,12 @@ def load_ratings():
         user_id = items[0]
         movie_id = items[1]
         score = items[2]
-        rating_id = items[3]
 
         rating = Rating(user_id=user_id,
                         movie_id=movie_id,
-                        score=score,
-                        rating_id=rating_id)
+                        score=score)
+        db.session.add(rating)
+    db.session.commit()
 
 def set_val_user_id():
     """Set value for the next user_id after seeding database"""
