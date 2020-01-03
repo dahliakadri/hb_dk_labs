@@ -60,7 +60,7 @@ const handleWrongGuess = () => {
     $('#letter-buttons').prop("disabled", true);
     $('#play-again').show();
   } else {numWrong += 1;
-    $('image').attr('src',`images/guess${numWrong}.png`)}
+    $('#shark-img img').attr('src',`images/guess${numWrong}.png`)}
 
 };
 

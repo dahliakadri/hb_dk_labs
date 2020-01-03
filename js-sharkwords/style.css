@@ -3,6 +3,10 @@ body {
 	font-size: 52px;
 }
 
+p span {
+	color: green;
+}
+
 section {
 	display: flex;
 	justify-content: center;
